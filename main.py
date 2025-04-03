@@ -4,17 +4,19 @@ from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
-# Function to scrape quotes from a specific page
+# function to scrape quotes from a specific page
 def scrape_quotes(page=1):
     url = f"https://quotes.toscrape.com/page/{page}/"
+    # where to fetch the quotes from
 
+    # check if the page number is valid
     try:
         response = requests.get(url, timeout=5)
         response.raise_for_status()  # Raise error for HTTP errors (e.g., 404, 500)
     except requests.RequestException as e:
         return {"error": f"Failed to fetch data: {str(e)}"}
 
-    # Parse the HTML content using BeautifulSoup
+    # parsing HTML content using bs4
     soup = BeautifulSoup(response.text, 'html.parser')
     
     quotes = []
@@ -29,24 +31,24 @@ def scrape_quotes(page=1):
             "tags": tags
         })
 
-    # Check if there are no quotes (end of pages)
+    # check if there are no quotes (end of pages)
     if not quotes:
         return {"message": "No more quotes available."}
 
     return quotes
 
-# Root route to welcome users
+# root route to welcome users
 @app.route('/')
 def home():
     return "Welcome to the Quote Scraper API! Visit /quotes to get the scraped quotes."
 
-# API route to get quotes (supports pagination)
+# API route to get quotes
 @app.route('/quotes', methods=['GET'])
 def get_quotes():
     page = request.args.get('page', 1, type=int)  # Get 'page' from URL query, default = 1
     data = scrape_quotes(page)
     return jsonify(data)
 
-# Run the Flask app
+# run the Flask app
 if __name__ == '__main__':
     app.run(debug=True)
