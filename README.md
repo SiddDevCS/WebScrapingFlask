@@ -98,7 +98,3 @@ This project is licensed under the **MIT License**.
 Pull requests are welcome! If you find a bug or have suggestions, feel free to open an issue. Please support this repository, anything helps!
 
 ---
-
-## 🌟 Acknowledgments
-- [Quotes to Scrape](https://quotes.toscrape.com/) for providing test data
-- Flask, Requests, and BeautifulSoup for making this possible
